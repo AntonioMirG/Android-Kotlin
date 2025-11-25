@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -16,7 +17,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,7 +37,10 @@ import androidx.compose.runtime.internal.rememberComposableLambdaN
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.unit.max
+import kotlin.math.round
 
 
 class MainActivity : ComponentActivity() {
@@ -54,16 +60,23 @@ data class obrasDArte(
     val descripcion: String
 )
 
+
 @Composable
 fun galery(){
 
     val imagenes = listOf(
-        obrasDArte(R.drawable.foto1,"Cuadro1" ),
-        obrasDArte(R.drawable.foto2,"Cuadro2" ),
-        obrasDArte(R.drawable.foto3,"Cuadro3" ),
-        obrasDArte(R.drawable.foto4,"Cuadro4" ),
+        obrasDArte(R.drawable.foto1,"Torre Eiffel - pintura al óleo" ),
+        obrasDArte(R.drawable.foto2,"Stuke - pintura en lienzo" ),
+        obrasDArte(R.drawable.foto3,"El grito - Edvard Munch (1893)" ),
+        obrasDArte(R.drawable.foto4,"La Promenenade - Claude Monet (1875)" ),
     )
     val maxSize = imagenes.size
+
+    val colorFondo = Color(0xFFAEC6CF)
+    val colorAnterior = Color(0xFFFFB6C1)
+    val colorSiguiente = Color(0xFFB4FBB4)
+
+
 
     var numeroImagen by remember { mutableIntStateOf(0) }
 
@@ -106,7 +119,8 @@ fun galery(){
                 .padding(top = 40.dp)
                 .width(300.dp)
                 .height(100.dp)
-                .background(Color.Blue)
+                .background(colorFondo, shape = RoundedCornerShape(20.dp))
+
 
         ){
 
@@ -120,7 +134,7 @@ fun galery(){
         Row (
 
             modifier = Modifier
-                .background(Color.Green)
+                .width(250.dp)
 
             ,
             horizontalArrangement = Arrangement.SpaceAround,
@@ -131,13 +145,15 @@ fun galery(){
                 modifier = Modifier
                     .padding(top = 140.dp)
                     .height(100.dp)
-                    .width(100.dp)
-                    .background(Color.Yellow)
+                    .width(120.dp)
 
             ){
 
                 Button(
                     onClick = {anterior() },
+                    colors = ButtonDefaults.buttonColors(colorAnterior),
+
+
                 ){
                     Text("Anterior")
                 }
@@ -148,13 +164,12 @@ fun galery(){
                 modifier = Modifier
                     .padding(top = 140.dp)
                     .height(100.dp)
-                    .width(100.dp)
-                    .background(Color.Cyan)
-
+                    .width(120.dp)
             ){
 
                 Button(
                     onClick = { siguiente()},
+                    colors = ButtonDefaults.buttonColors(containerColor = colorSiguiente )
                 ){
                     Text("Siguiente")
                 }
